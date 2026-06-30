@@ -4323,12 +4323,17 @@
             }
         }
 
-        function playTravelMusic(cityIdx) {
-            // Stop musik yang sedang dimainkan
+        function stopTravelMusic() {
             if (state.currentAudio) {
                 state.currentAudio.pause();
                 state.currentAudio.currentTime = 0;
+                state.currentAudio = null;
             }
+        }
+
+        function playTravelMusic(cityIdx) {
+            // Stop musik yang sedang dimainkan
+            stopTravelMusic();
             
             // Jika ada musik untuk kota ini, putar
             if (cityIdx < cityData.length && cityData[cityIdx].music) {
@@ -4499,6 +4504,8 @@
         function openAdventureOverlay() {
             // Hentikan musik adventure sebelumnya jika ada
             stopAdventureMusic();
+            // Hentikan musik perjalanan agar tidak berbunyi bersamaan dengan audio petualangan
+            stopTravelMusic();
             
             const overlay = document.getElementById('adventure-overlay');
             const instrument = instrumentMap[state.idx] || { name: 'Alat Musik', icon: '🎵' };
