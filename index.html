@@ -1985,13 +1985,14 @@
 
         .adventure-player {
             position: absolute;
-            width: clamp(100px, 24vw, 125px);
-            height: clamp(120px, 29vw, 150px);
+            /* reduced size specifically for mini-game avatar */
+            width: clamp(70px, 18vw, 90px);
+            height: clamp(84px, 20vw, 110px);
             left: 50%;
             bottom: 5%;
             transform: translateX(-50%);
             transition: none;
-            font-size: clamp(75px, 15vw, 90px);
+            font-size: clamp(55px, 11vw, 70px);
             z-index: 10;
         }
 
