@@ -4549,6 +4549,12 @@
             const stage = document.getElementById('adventure-stage');
             stage.querySelectorAll('.adventure-obstacle').forEach(el => el.remove());
 
+            if (cityData[state.idx]?.name === 'Nusa Tenggara Timur') {
+                stage.style.backgroundImage = 'url("https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/68e838f2227532cd484f070a7ac190122a19a48a/mini%20game%20(6).png")';
+            } else {
+                stage.style.backgroundImage = 'url("https://raw.githubusercontent.com/yuramarvellyn-cmyk/RESONANCE-ODYSSEY-JUNI/ce94bd70c9afe0ea3e51ea04386e98f00a953784/mini%20game.png")';
+            }
+
             // Add mouse and touch controls
             stage.addEventListener('mousemove', handleMouseMove);
             stage.addEventListener('touchmove', handleTouchMove, { passive: false });
