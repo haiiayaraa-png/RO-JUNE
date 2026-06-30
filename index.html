@@ -4549,11 +4549,27 @@
             const stage = document.getElementById('adventure-stage');
             stage.querySelectorAll('.adventure-obstacle').forEach(el => el.remove());
 
-            if (cityData[state.idx]?.name === 'Nusa Tenggara Timur') {
-                stage.style.backgroundImage = 'url("https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/68e838f2227532cd484f070a7ac190122a19a48a/mini%20game%20(6).png")';
-            } else {
-                stage.style.backgroundImage = 'url("https://raw.githubusercontent.com/yuramarvellyn-cmyk/RESONANCE-ODYSSEY-JUNI/ce94bd70c9afe0ea3e51ea04386e98f00a953784/mini%20game.png")';
-            }
+            const stageBackgroundMap = {
+                'Nusa Tenggara Timur': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20NTT.png',
+                'Aceh': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20ACEH.png',
+                'Bali': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20BALI.png',
+                'Jawa Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JABAR.png',
+                'Jambi': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JAMBI.png',
+                'Jawa Timur': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JATIM.png',
+                'Kalimantan Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20KALBAR.png',
+                'Kepulauan Riau': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20KEPRI.png',
+                'Lampung': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20LAMPUNG.png',
+                'Maluku': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20MALUKU.png',
+                'Sulawesi Selatan / Toraja': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SULSEL.png',
+                'Sulawesi Utara': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SULUT.png',
+                'Sumatera Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMBAR.png',
+                'Sumatera Selatan': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMSEL.png',
+                'Sumatera Utara': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMUT.png'
+            };
+
+            const currentRegionName = cityData[state.idx]?.name;
+            const selectedStageBackground = stageBackgroundMap[currentRegionName] || 'https://raw.githubusercontent.com/yuramarvellyn-cmyk/RESONANCE-ODYSSEY-JUNI/ce94bd70c9afe0ea3e51ea04386e98f00a953784/mini%20game.png';
+            stage.style.backgroundImage = `url("${selectedStageBackground}")`;
 
             // Add mouse and touch controls
             stage.addEventListener('mousemove', handleMouseMove);
