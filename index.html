@@ -4004,27 +4004,18 @@
 
         function initBoard() {
             const board = document.getElementById('board');
-            const defaultImage = 'https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/JAKARTA.png';
             
             cityData.forEach((city, i) => {
-                    const tile = document.createElement('div');
-                    tile.className = `tile ${city.side === 'corner' ? 'corner-tile' : city.side}`;
-                    tile.id = `tile-${i}`;
-                    tile.dataset.index = i;
-                    tile.style.gridRow = gridCoords[i][0];
-                    tile.style.gridColumn = gridCoords[i][1];
-                    let inner = ``;
-
-                    // Only set images for board tiles other than the starting tile
-                    const imageUrl = i === 0 ? '' : city.image || defaultImage;
-                    if (imageUrl) {
-                        tile.style.backgroundImage = `url("${imageUrl}")`;
-                        tile.style.backgroundSize = 'cover';
-                        tile.style.backgroundPosition = 'center';
-                    }
-
-                    tile.innerHTML = inner;
-                    board.appendChild(tile);
+                const tile = document.createElement('div');
+                tile.className = `tile ${city.side === 'corner' ? 'corner-tile' : city.side}`;
+                tile.id = `tile-${i}`;
+                tile.dataset.index = i;
+                tile.style.gridRow = gridCoords[i][0];
+                tile.style.gridColumn = gridCoords[i][1];
+                tile.style.backgroundImage = 'none';
+                tile.style.backgroundColor = 'rgba(255, 255, 255, 0.55)';
+                tile.innerHTML = '';
+                board.appendChild(tile);
             });
         }
 
