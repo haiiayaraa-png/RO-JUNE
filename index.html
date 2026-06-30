@@ -4167,10 +4167,9 @@
         }
 
         function showQuiz() {
-            // Hentikan musik perjalanan saat quiz muncul
-            if (state.currentAudio) {
-                state.currentAudio.pause();
-                state.currentAudio.currentTime = 0;
+            // Biarkan musik perjalanan tetap berjalan saat quiz muncul.
+            if (state.currentAudio && state.currentAudio.paused) {
+                state.currentAudio.play().catch(e => console.log('Musik tidak bisa dilanjutkan:', e));
             }
             
             state.currentQuiz = cityQuestions[state.idx];
@@ -4332,15 +4331,25 @@
         }
 
         function playTravelMusic(cityIdx) {
-            // Stop musik yang sedang dimainkan
-            stopTravelMusic();
-            
-            // Jika ada musik untuk kota ini, putar
-            if (cityIdx < cityData.length && cityData[cityIdx].music) {
-                state.currentAudio = new Audio(cityData[cityIdx].music);
-                state.currentAudio.volume = 0.5; // volume 50%
-                state.currentAudio.play().catch(e => console.log('Musik tidak bisa diputar:', e));
+            const musicUrl = cityIdx < cityData.length ? cityData[cityIdx].music : '';
+            if (!musicUrl) {
+                stopTravelMusic();
+                return;
             }
+
+            if (state.currentAudio && state.currentAudio.dataset.region === String(cityIdx)) {
+                if (state.currentAudio.paused) {
+                    state.currentAudio.play().catch(e => console.log('Musik tidak bisa dilanjutkan:', e));
+                }
+                return;
+            }
+
+            stopTravelMusic();
+            state.currentAudio = new Audio(musicUrl);
+            state.currentAudio.dataset.region = String(cityIdx);
+            state.currentAudio.loop = true;
+            state.currentAudio.volume = 0.5; // volume 50%
+            state.currentAudio.play().catch(e => console.log('Musik tidak bisa diputar:', e));
         }
 
         function startAuto() {
@@ -4504,8 +4513,10 @@
         function openAdventureOverlay() {
             // Hentikan musik adventure sebelumnya jika ada
             stopAdventureMusic();
-            // Hentikan musik perjalanan agar tidak berbunyi bersamaan dengan audio petualangan
-            stopTravelMusic();
+            // Biarkan musik perjalanan tetap berjalan saat overlay petualangan dibuka.
+            if (state.currentAudio && state.currentAudio.paused) {
+                state.currentAudio.play().catch(e => console.log('Musik tidak bisa dilanjutkan:', e));
+            }
             
             const overlay = document.getElementById('adventure-overlay');
             const instrument = instrumentMap[state.idx] || { name: 'Alat Musik', icon: '🎵' };
@@ -4546,10 +4557,9 @@
             adventureState.finished = false;
             adventureState.caught = false;
 
-            // Mulai mainkan musik wilayah dengan loop otomatis
-            const musicUrl = cityData[state.idx]?.music;
-            if (musicUrl) {
-                playAdventureMusic(musicUrl);
+            // Pertahankan musik wilayah yang sedang berjalan agar tidak terputus saat mini-game dimulai.
+            if (state.currentAudio && state.currentAudio.paused) {
+                state.currentAudio.play().catch(e => console.log('Musik tidak bisa dilanjutkan:', e));
             }
 
             document.getElementById('adventure-instruction').innerText = '';
