@@ -4487,6 +4487,33 @@
             }
         }
 
+        function setAdventureStageBackground() {
+            const stage = document.getElementById('adventure-stage');
+            if (!stage) return;
+
+            const stageBackgroundMap = {
+                'Nusa Tenggara Timur': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20NTT.png',
+                'Aceh': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20ACEH.png',
+                'Bali': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20BALI.png',
+                'Jawa Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JABAR.png',
+                'Jambi': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JAMBI.png',
+                'Jawa Timur': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JATIM.png',
+                'Kalimantan Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20KALBAR.png',
+                'Kepulauan Riau': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20KEPRI.png',
+                'Lampung': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20LAMPUNG.png',
+                'Maluku': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20MALUKU.png',
+                'Sulawesi Selatan / Toraja': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SULSEL.png',
+                'Sulawesi Utara': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SULUT.png',
+                'Sumatera Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMBAR.png',
+                'Sumatera Selatan': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMSEL.png',
+                'Sumatera Utara': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMUT.png'
+            };
+
+            const currentRegionName = cityData[state.idx]?.name;
+            const selectedStageBackground = stageBackgroundMap[currentRegionName] || 'https://raw.githubusercontent.com/yuramarvellyn-cmyk/RESONANCE-ODYSSEY-JUNI/ce94bd70c9afe0ea3e51ea04386e98f00a953784/mini%20game.png';
+            stage.style.backgroundImage = `url("${selectedStageBackground}")`;
+        }
+
         function openAdventureOverlay() {
             // Hentikan musik adventure sebelumnya jika ada
             stopAdventureMusic();
@@ -4513,6 +4540,7 @@
             document.getElementById('area-preview-overlay').classList.remove('show');
             // sembunyikan token papan saat menampilkan overlay petualangan
             hideBoardToken();
+            setAdventureStageBackground();
             overlay.classList.remove('hidden');
             overlay.classList.add('show');
         }
@@ -4548,28 +4576,7 @@
 
             const stage = document.getElementById('adventure-stage');
             stage.querySelectorAll('.adventure-obstacle').forEach(el => el.remove());
-
-            const stageBackgroundMap = {
-                'Nusa Tenggara Timur': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20NTT.png',
-                'Aceh': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20ACEH.png',
-                'Bali': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20BALI.png',
-                'Jawa Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JABAR.png',
-                'Jambi': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JAMBI.png',
-                'Jawa Timur': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20JATIM.png',
-                'Kalimantan Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20KALBAR.png',
-                'Kepulauan Riau': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20KEPRI.png',
-                'Lampung': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20LAMPUNG.png',
-                'Maluku': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20MALUKU.png',
-                'Sulawesi Selatan / Toraja': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SULSEL.png',
-                'Sulawesi Utara': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SULUT.png',
-                'Sumatera Barat': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMBAR.png',
-                'Sumatera Selatan': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMSEL.png',
-                'Sumatera Utara': 'https://raw.githubusercontent.com/haiiayaraa-png/RO-JUNE/d46db559f8fd3fc0ea133bd0e9bd91bf9ff8dcc8/GAME%20SUMUT.png'
-            };
-
-            const currentRegionName = cityData[state.idx]?.name;
-            const selectedStageBackground = stageBackgroundMap[currentRegionName] || 'https://raw.githubusercontent.com/yuramarvellyn-cmyk/RESONANCE-ODYSSEY-JUNI/ce94bd70c9afe0ea3e51ea04386e98f00a953784/mini%20game.png';
-            stage.style.backgroundImage = `url("${selectedStageBackground}")`;
+            setAdventureStageBackground();
 
             // Add mouse and touch controls
             stage.addEventListener('mousemove', handleMouseMove);
