@@ -4801,12 +4801,15 @@
 
         function showQuizCards() {
             const quiz1 = cityQuestions[state.idx];
-            const nextIdx = (state.idx % cityData.length) + 1; // Next kota, loop ke 1 jika 15
-            const quiz2 = cityQuestions[nextIdx];
+            const nextIdx = state.idx + 1;
+            const quiz2 = nextIdx < cityData.length ? cityQuestions[nextIdx] : null;
+            const hasSecondQuiz = Boolean(quiz2);
+            state.quiz2Available = hasSecondQuiz;
             
-            if (!quiz1 || !quiz2) {
-                // Jika tidak ada soal, langsung lanjut
+            if (!quiz1) {
+                // Jika tidak ada soal untuk kota ini, langsung lanjut
                 state.isMoving = false;
+                showBoardToken();
                 updateTokenPos();
                 updateControlButtons();
                 return;
@@ -5021,14 +5024,24 @@ Jika tidak ada energi yang hilang (ideal), pernyataan yang benar adalah …</div
             document.getElementById('question-card-4').innerHTML = card4HTML;
             const options4 = document.getElementById('options-4');
             options4.innerHTML = '';
-            card4Options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-opt-btn';
-                btn.innerText = opt;
-                btn.disabled = true;
-                btn.onclick = () => checkCardAnswer(4, idx === card4Correct);
-                options4.appendChild(btn);
-            });
+            if (hasSecondQuiz) {
+                card4Options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'quiz-opt-btn';
+                    btn.innerText = opt;
+                    btn.disabled = true;
+                    btn.onclick = () => checkCardAnswer(4, idx === card4Correct);
+                    options4.appendChild(btn);
+                });
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.style.fontSize = '10px';
+                placeholder.style.lineHeight = '1.5';
+                placeholder.style.textAlign = 'justify';
+                placeholder.style.padding = '0 20px 0 0';
+                placeholder.innerText = 'Tidak ada soal kedua untuk wilayah terakhir. Setelah menjawab soal pertama, permainan akan selesai.';
+                options4.appendChild(placeholder);
+            }
 
             const overlay = document.getElementById('quiz-cards-overlay');
             overlay.classList.add('show');
@@ -5039,7 +5052,7 @@ Jika tidak ada energi yang hilang (ideal), pernyataan yang benar adalah …</div
         }
 
         function checkCardAnswer(cardNum, correct) {
-            const questionId = cardNum === 3 ? state.idx : ((state.idx % cityData.length) + 1);
+            const questionId = cardNum === 3 ? state.idx : (state.idx + 1 < cityData.length ? state.idx + 1 : state.idx);
             const cityName = cityData[questionId].name;
             
             // Record jawaban
@@ -5065,10 +5078,29 @@ Jika tidak ada energi yang hilang (ideal), pernyataan yang benar adalah …</div
                 // lives feature removed
             }
             
-            // Jika kartu 3 dijawab, unlock kartu 4
+            // Jika kartu 3 dijawab, unlock kartu 4 atau langsung lanjut jika tidak ada soal kedua
             if (cardNum === 3) {
                 state.card3Answered = true;
-                document.getElementById('options-4').querySelectorAll('button').forEach(btn => btn.disabled = false);
+                const card4Buttons = document.getElementById('options-4').querySelectorAll('button');
+                if (state.quiz2Available) {
+                    card4Buttons.forEach(btn => btn.disabled = false);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('quiz-cards-overlay').classList.remove('show');
+                        state.isMoving = false;
+                        showBoardToken();
+                        if (state.visited.size === cityData.length) {
+                            finish(true);
+                        }
+                        updateTokenPos();
+                        if (state.autoMode) {
+                            state.autoPaused = false;
+                            if (state.autoTimer) clearTimeout(state.autoTimer);
+                            state.autoTimer = setTimeout(autoStep, 300);
+                        }
+                        updateControlButtons();
+                    }, 2000);
+                }
             } else if (cardNum === 4) {
                 state.card4Answered = true;
                 // Setelah kedua kartu dijawab, lanjut
