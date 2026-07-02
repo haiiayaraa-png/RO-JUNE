@@ -4046,7 +4046,10 @@
 
         function closeQuizCards() {
             const overlay = document.getElementById('quiz-cards-overlay');
-            if (overlay) overlay.classList.remove('show');
+            if (overlay) {
+                overlay.classList.remove('show');
+                overlay.classList.add('hidden');
+            }
 
             const adventureOverlay = document.getElementById('adventure-overlay');
             if (adventureOverlay) {
@@ -4058,10 +4061,21 @@
                 previewOverlay.classList.remove('show');
                 previewOverlay.classList.add('hidden');
             }
+            const quizOverlay = document.getElementById('quiz-overlay');
+            if (quizOverlay) {
+                quizOverlay.classList.remove('show');
+                quizOverlay.classList.add('hidden');
+            }
+            const regionOverlay = document.getElementById('region-notification-overlay');
+            if (regionOverlay) {
+                regionOverlay.classList.remove('show');
+                regionOverlay.classList.add('hidden');
+            }
 
             state.isMoving = false;
             showBoardToken();
             updateTokenPos();
+            updateBoardInteraction();
             if (state.autoMode) {
                 state.autoPaused = false;
                 if (state.autoTimer) clearTimeout(state.autoTimer);
@@ -4834,6 +4848,22 @@
         }
 
         function showQuizCards() {
+            const adventureOverlay = document.getElementById('adventure-overlay');
+            if (adventureOverlay) {
+                adventureOverlay.classList.remove('show');
+                adventureOverlay.classList.add('hidden');
+            }
+            const previewOverlay = document.getElementById('area-preview-overlay');
+            if (previewOverlay) {
+                previewOverlay.classList.remove('show');
+                previewOverlay.classList.add('hidden');
+            }
+            const quizOverlay = document.getElementById('quiz-overlay');
+            if (quizOverlay) {
+                quizOverlay.classList.remove('show');
+                quizOverlay.classList.add('hidden');
+            }
+
             const quiz1 = cityQuestions[state.idx];
             const nextIdx = state.idx + 1;
             const quiz2 = nextIdx < cityData.length ? cityQuestions[nextIdx] : null;
