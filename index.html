@@ -3727,7 +3727,8 @@
             score: 0,
             answers: [], // Array untuk track jawaban per soal: {questionId, correct, answer}
             card3Answered: false,
-            card4Answered: false
+            card4Answered: false,
+            quiz2Available: false
         };
         
         const TRAVEL_DURATION = 5000; // 5 seconds untuk perjalanan (agar musik bisa dimainkan)
@@ -4035,11 +4036,40 @@
                 tile.classList.remove('clickable', 'active-target');
             });
 
-            if (!nextIndex) return;
+            if (nextIndex === null) return;
 
             const nextTile = document.getElementById(`tile-${nextIndex}`);
             if (nextTile) {
                 nextTile.classList.add('clickable', 'active-target');
+            }
+        }
+
+        function closeQuizCards() {
+            const overlay = document.getElementById('quiz-cards-overlay');
+            if (overlay) overlay.classList.remove('show');
+
+            const adventureOverlay = document.getElementById('adventure-overlay');
+            if (adventureOverlay) {
+                adventureOverlay.classList.remove('show');
+                adventureOverlay.classList.add('hidden');
+            }
+            const previewOverlay = document.getElementById('area-preview-overlay');
+            if (previewOverlay) {
+                previewOverlay.classList.remove('show');
+                previewOverlay.classList.add('hidden');
+            }
+
+            state.isMoving = false;
+            showBoardToken();
+            updateTokenPos();
+            if (state.autoMode) {
+                state.autoPaused = false;
+                if (state.autoTimer) clearTimeout(state.autoTimer);
+                state.autoTimer = setTimeout(autoStep, 300);
+            }
+            updateControlButtons();
+            if (state.visited.size === cityData.length) {
+                finish(true);
             }
         }
 
@@ -4795,7 +4825,11 @@
             const overlay = document.getElementById('adventure-overlay');
             overlay.classList.remove('show');
             overlay.classList.add('hidden');
-            document.getElementById('area-preview-overlay').classList.remove('show');
+            const previewOverlay = document.getElementById('area-preview-overlay');
+            if (previewOverlay) {
+                previewOverlay.classList.remove('show');
+                previewOverlay.classList.add('hidden');
+            }
             showQuizCards();
         }
 
@@ -4811,6 +4845,7 @@
                 state.isMoving = false;
                 showBoardToken();
                 updateTokenPos();
+                updateBoardInteraction();
                 updateControlButtons();
                 return;
             }
@@ -5086,40 +5121,14 @@ Jika tidak ada energi yang hilang (ideal), pernyataan yang benar adalah …</div
                     card4Buttons.forEach(btn => btn.disabled = false);
                 } else {
                     setTimeout(() => {
-                        document.getElementById('quiz-cards-overlay').classList.remove('show');
-                        state.isMoving = false;
-                        showBoardToken();
-                        if (state.visited.size === cityData.length) {
-                            finish(true);
-                        }
-                        updateTokenPos();
-                        if (state.autoMode) {
-                            state.autoPaused = false;
-                            if (state.autoTimer) clearTimeout(state.autoTimer);
-                            state.autoTimer = setTimeout(autoStep, 300);
-                        }
-                        updateControlButtons();
+                        closeQuizCards();
                     }, 2000);
                 }
             } else if (cardNum === 4) {
                 state.card4Answered = true;
                 // Setelah kedua kartu dijawab, lanjut
                 setTimeout(() => {
-                    document.getElementById('quiz-cards-overlay').classList.remove('show');
-                    state.isMoving = false;
-                    // kembalikan token papan setelah kartu selesai
-                    showBoardToken();
-                    if (state.visited.size === cityData.length) {
-                        finish(true);
-                    }
-                    updateTokenPos();
-                    // resume auto if it was running before quiz
-                    if (state.autoMode) {
-                        state.autoPaused = false;
-                        if (state.autoTimer) clearTimeout(state.autoTimer);
-                        state.autoTimer = setTimeout(autoStep, 300);
-                    }
-                    updateControlButtons();
+                    closeQuizCards();
                 }, 2000);
             }
         }
